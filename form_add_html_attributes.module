@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * @file
+ * form_add_html_attributes.module.
+ *
+ * This module adds the attribute to selected key user forms.
+ * On a browser that respects this setting, 
+ *
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Cache\Cache;
+
+/**
+ * Implements hook_help().
+ */
+function form_add_html_attributes_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help.
+    case 'help.page.form_add_html_attribute':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The  module form_add_html_attribute adds the html attribute to a forms. On a browser that respects this setting') . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Configuring the module') . '</dt>';
+      $output .= '<dd>' . t("To configure the module visit the <a href=':config-page'>Add Html Attribute</a> page, <em>check</em> which feature you'd like to enable and save the configuration. For this you need the <em>Administer Add Html Attribute</em> permission.", [':config-page' => Url::fromRoute('add_html_attribute.admin_settings_form')->toString()]) . '</dd>';
+      $output .= '</dl>';
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_alter().
+ *
+ */
+function form_add_html_attributes_form_alter($form, FormStateInterface $form_state, $form_id) {
+
+  $config = \Drupal::config('form_add_html_attributes.adminsettings');
+  $list_form_id = explode(',', $config->get('field_form_ids'));
+  $config->get('autocomplete_off');
+  $config->get('autofocus');
+  $config->get('disabled');
+  $config->get('novalidate');
+  $config->get('formenctype');
+  $config->get('formnovalidate');
+  $config->get('multiple');
+  $config->get('readonly');
+  $config->get('required_input');
+  /*
+  print_r($config->get('autocomplete_off'));
+  print_r($config->get('autofocus'));
+  print_r($config->get('disabled'));
+  print_r($config->get('novalidate'));
+  print_r($config->get('formenctype'));
+  print_r($config->get('formnovalidate'));
+  print_r($config->get('multiple'));
+  print_r($config->get('readonly'));
+  print_r($config->get('required_input'));
+  */
+  foreach ($list_form_id as $id) {
+    
+    if ($id == $form_id ) {
+
+      if (($config->get('autocomplete_off')) == 1 ) {
+        $form['#attributes']['autocomplete'] = 'false';
+        $form['input']['#attributes']['autocomplete'] = $arrayName = array('autocomplete' => 'off' );
+        $form['pass']['#attributes']['autocomplete'] = 'false';
+      } 
+
+      if (($config->get('autofocus')) == 1 ) {
+        //$form['#attributes']['autofocus'] = 'TRUE';
+      }
+
+      if (($config->get('disabled')) == 1 ) {
+        /*
+        $form['input']['#attributes'] =  array('disabled' => 'disabled');
+        $form['email']['#attributes'] = array('disabled' => 'disabled');
+        $form['number']['#attributes'] = array('disabled' => 'disabled');
+        $form['textarea']['#attributes'] = array('disabled' => 'disabled');
+        $form['pass']['#attributes'] = array('disabled' => 'disabled');
+        */
+      }
+
+      if (($config->get('novalidate')) == 1 ) {
+       // $form['#attributes']['novalidate'] = 'TRUE'
+      }
+
+      if (($config->get('formenctype')) == 1 ) {
+       // $form['#attributes']['formenctype'] = ''
+      }
+
+      if (($config->get('formnovalidate')) == 1 ) {
+       // $form['#attributes']['formnovalidate'] = 'TRUE'
+      }
+      
+      if (($config->get('multiple')) == 1 ) {
+       // $form['#attributes']['multiple'] = 'TRUE'
+      }
+      if (($config->get('readonly')) == 1 ) {
+        $form['#attributes']['readonly'] =  'readonly';
+      }
+      if (($config->get('required_input')) == 1 ) {
+       // $form['#attributes']['required'] = 'TRUE'
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+form_add_html_attributes.admin_settings_form:  
+  title: 'Add Html Attribute configuration'  
+  route_name: form_add_html_attributes.admin_settings_form  
+  description: 'Add Html Attribute admin'  
+  parent: system.admin_config_system  
+  weight: 99 

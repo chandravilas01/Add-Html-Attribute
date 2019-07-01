@@ -1,0 +1,4 @@
+services:
+  form_add_html_attributes.form_add_html_attributes_services:
+    class: Drupal\form_add_html_attributes\AddHtmlAttributeServices
+    arguments: ['@config.factory',]
